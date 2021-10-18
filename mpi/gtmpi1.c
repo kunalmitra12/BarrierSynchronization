@@ -23,15 +23,15 @@ void gtmpi_init(int num_processes){
     // Create node for arrival tree
     for (int i=0; i<4; ++i){
         childRank = 4 * rank + i + 1;
-        if (childRank < num_processes - 1)
+        if (childRank < num_processes)
             node->arrivalChildren[i] = 4 * rank + i + 1;
         else 
             node->arrivalChildren[i] = -1;
     }
 
     //Create node for wake up tree
-    node->wakeChildren[0] = (2 * rank + 1) < num_processes - 1 ? (2 * rank + 1) : -1;
-    node->wakeChildren[1] = (2 * rank + 2) < num_processes - 1 ? (2 * rank + 2) : -1;
+    node->wakeChildren[0] = (2 * rank + 1) < num_processes ? (2 * rank + 1) : -1;
+    node->wakeChildren[1] = (2 * rank + 2) < num_processes ? (2 * rank + 2) : -1;
 
     if (rank!=0) {
         node->arrivalParent = (rank - 1) / 4;
@@ -41,14 +41,22 @@ void gtmpi_init(int num_processes){
         node->wakeParent = -1;
     }
 }
-
+static int round = 1;
 void gtmpi_barrier(){
     int dummy_msg = 0;
     MPI_Status mpi_result;
+
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
     // Wait on children
     for (int i=0; i<4; ++i){
         if(node->arrivalChildren[i] != -1)
+        {
+            //printf("%d: Waiting on %d\n", rank, node->arrivalChildren[i]);
             MPI_Recv(&dummy_msg, 1, MPI_INT, node->arrivalChildren[i], 0, MPI_COMM_WORLD, &mpi_result);
+            //printf("%d: %d Arrived\n", rank, node->arrivalChildren[i]);
+        }
     }
 
     // root has no parent
@@ -64,6 +72,10 @@ void gtmpi_barrier(){
 
     if (node->wakeChildren[1] != -1)
         MPI_Send(&dummy_msg, 1, MPI_INT, node->wakeChildren[1], 0, MPI_COMM_WORLD);
+    
+
+    printf("%d: Reached end of barrier (Round: %d)\n", rank, round);
+    round++;
 }
 
 void gtmpi_finalize(){
