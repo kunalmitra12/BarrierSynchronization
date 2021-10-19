@@ -5,28 +5,28 @@
 #define FALSE 0
 
 int count;
-int sense;
-int threadCount;
+int global_sense;
+int thread_total;
 
 void gtmp_init(int num_threads)
 {
-    threadCount = num_threads;
+    thread_total = num_threads;
     count = num_threads;
-    sense = true;
+    global_sense = TRUE; // initialize to true
     omp_set_num_threads(num_threads);
 }
 
 void gtmp_barrier()
 {
-    int localSense = sense == 1 ? 0 : 1;
+    int local_sense = global_sense == 1 ? 0 : 1;
     if (__sync_fetch_and_sub(&count, 1) == 1)
     {
-        count = threadCount;
-        sense = localSense;
+        count = thread_total;
+        global_sense = local_sense;
     }
     else
     {
-        while (sense != localSense)
+        while (global_sense != local_sense)
             ;
     }
 }
