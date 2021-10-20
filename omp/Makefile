@@ -2,10 +2,9 @@ OMPFLAGS = -fopenmp
 OMPLIBS = -lgomp
 
 CC = gcc
-LINK = mpicc
 CFLAGS = -g -std=gnu99 -I. -Wall $(OMPFLAGS)
 LDLIBS = $(OMPLIBS) -lm
-INCLUDES = /usr/include/mpich
+
 
 MP_SRC1 = gtmp1.c
 MP_SRC2 = gtmp2.c
