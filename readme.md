@@ -33,7 +33,7 @@ Start the virtual machine using `vagrant up` and connect to it using `vagrant ss
 #### OpenMP
 You can compile and run OpenMP programs on any Linux machine that has libomp installed. You can try the example code in the assignment folder (examples/openmp.tar.gz).
 Additional informational resources are as follows:
-- [OpenMP Website](https://www.openmp.org//)
+- [OpenMP Website](https://www.topenmp.org//)
 - [OpenMP Specification](https://www.openmp.org/specifications/)
 - [Introduction to OpenMP (video series)](https://www.openmp.org/uncategorized/tutorial-introduction-to-openmp/)
 - [LLNL's OpenMP Tutorial](https://computing.llnl.gov/tutorials/openMP/)
