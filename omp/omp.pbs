@@ -6,12 +6,10 @@
 #PBS -q coc-ice
 #PBS -j oe
 
-//export OMP_NUM_THREADS=2
-
 mkdir -p ~/tmp/omp-example/
 cp ~/project2/omp/* ~/tmp/omp-example/
 cd ~/tmp/omp-example/
-make clean all
+make
 
-./mp1 2 1
+./mp1 2
 rm -rf ~/tmp/omp-example/

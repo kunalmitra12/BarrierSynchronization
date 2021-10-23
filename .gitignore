@@ -15,4 +15,5 @@ project2/omp/Makefile
 project2/omp/mp1
 project2/omp/mp2
 project2/omp/omp.pbs
+.vagrant/
 .gitignore
